@@ -1,0 +1,62 @@
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+Dashboard
+{% endblock %}
+{% block body %}
+<title>dashboard</title>
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">                                    
+                                    {% comment %} <div class="page-title-right">
+                                        <form class="d-flex">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-light" id="dash-daterange">
+                                                <span class="input-group-text bg-primary border-primary text-white">
+                                                    <i class="mdi mdi-calendar-range font-13"></i>
+                                                </span>
+                                            </div>
+                                            <a href="javascript: void(0);" class="btn btn-primary ms-2">
+                                                <i class="mdi mdi-autorenew"></i>
+                                            </a>
+                                            <a href="javascript: void(0);" class="btn btn-primary ms-1">
+                                                <i class="mdi mdi-filter-variant"></i>
+                                            </a>
+                                        </form>
+                                    </div> {% endcomment %}
+                                    <h4 class="page-title">Dashboard</h4>
+                                </div>
+                            </div>
+                        </div>
+                   
+                        <body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; font-family: Arial, sans-serif;">
+                            <div  class="card"style="text-align: center;">
+                                <br><br><br><br><br><br><br><br><br><br><br>
+                                <h4 style="margin: 0;">WELCOME TO ADMIN HOMEPAGE</h4><br><br><br><br><br><br><br>
+                                <br><br><br><br><br><br><br>
+                       
+                            </div>
+                        </body>
+                    
+                
+                        <!-- end row -->
+
+
+                    </div>
+                    <!-- container -->
+
+                </div>
+                <!-- content -->
+
+             {%endblock%}

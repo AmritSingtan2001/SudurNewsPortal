@@ -1,0 +1,79 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block metatag %}
+<meta property="og:title" content="{{newsDetails.title}}" />
+<meta property="og:description" content="{{newsDetails.discriptions}}" />
+<meta property="og:url" content="" />
+<meta property="og:image" content="http://127.0.0.1:8000{{newsDetails.image.url}}" />
+{% endblock %}
+{% block title %}
+newsDetails
+{% endblock %}
+{% block content %}
+    <!-- banner -->
+    {% if firstads %}
+    <a href="{{firstads.url}}" target="_blank" >
+        <div class="addbanner">
+            <img src="{{firstads.image.url}}" alt=""
+                class="w-5/6 m-auto mt-5">
+            <hr class="w-5/6 m-auto mt-5">
+
+        </div>
+    </a>
+    {% endif %}
+    <div class="bachat bg-white w-full p-3" style="top:54px;">
+        <h1 class="md:text-4xl md:pl-28 md:text-start sm:text-justify font-bold p-2 title newsheading " style="color:#03406f;" >{{newsDetails.title}}</h1>
+    </div>
+    <hr class="mt-2">
+
+    <div class="flex flex-wrap justify-center gap-x-10 mt-5 mb-5">
+        <div class="div1  w-3/5 ">
+            <img src="{{newsDetails.image.url}} "
+                alt="" class="w-full ">
+            <span class="px-5 py-5 text-xl text-gray-600 text-justify" style="font-size:25px;">
+                {{newsDetails.discriptions|safe}}
+            </span>
+            <br>
+            <br>
+           
+            <!-- related khabar -->
+            <h1 class="text-3xl font-bold underline">सम्बन्धित खबर</h1>
+            <br>
+            <div class="w-full flex flex-wrap justify-evnely gap-y-5">
+                {% for news in relatedNews%}
+                <div class="w-60 rounded overflow-hidden shadow-lg md:ps-2">
+                    <img class=""
+                        src="{{news.image.url}}"
+                        alt="Card Image" style="height:150px; width:100%; object-fit:cover;">
+                    <div class=" py-4">
+                        <p class="px-2 text-xl mb-2">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+
+                
+            </div>
+
+        </div>
+        {% if verticalAds %}
+        <div class="div2 flex flex-col gap-y-5  ">
+            {% for ads in verticalAds %}
+            <a href="{{ads.url}}" target="_blank">
+                <img src="{{ads.image.url}}" alt="">
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+    <hr>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=64d3293dcbb13e0019b605aa&product=sticky-share-buttons&source=platform" async="async"></script>
+    <div class="sharethis-sticky-share-buttons"></div>
+    <!-- Description Section -->
+
+
+   {% endblock %}

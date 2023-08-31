@@ -1,0 +1,96 @@
+
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+{% if instance %}Edit SubCategorie{% else %}Add SubCategorie{% endif %}
+{% endblock %}
+{% block body %}
+<title>{% if instance %}Edit SubCategorie{% else %}Add SubCategorie{% endif %}</title>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                               
+                                    <h4 class="page-title">{% if instance %}Edit SubCategorie{% else %}Add SubCategorie{% endif %}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                      
+                        <form method="post" enctype="multipart/form-data" action="{% if instance %}{% url 'dashboard:edit_SubCategories' instance.id %}{% else %}{% url 'dashboard:add_SubCategories' %}{% endif %}">
+                            {% csrf_token %}
+                                {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert alert-{{ msg.tags }} alert-dismissible text-bg-{{ msg.tags }} border-0 fade show" role="alert">
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <strong>{% if msg.tags == 'success' %}Success{% elif msg.tags == 'warning' %}Warning{% endif %} - </strong>{{ msg.message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-xl-6">
+
+                                                     <!-- Date View -->
+                                                     <div class="mb-3">
+                                                        <label for="{{ form.ordering.id_for_label }}" class="form-label">ordering</label>
+                                                        <input type="number" name=" {{ form.ordering.name }}  " id="{{ form.ordering.id_for_label }}" class="form-control" required
+                                                               value="{% if instance %}{{ instance.ordering }}{% endif %}" placeholder="Enter ordering">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label  for="{{ form.maincategorie.id_for_label }}" class="form-label" required> Main Category </label><br>
+                                                           {{ form.maincategorie }}                                                        
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="{{ form.subcategorie_name.id_for_label }}" class="form-label">Sub-Categorie Name</label>
+                                                        <input type="text" name=" {{ form.subcategorie_name.name }}  " id="{{ form.subcategorie_name.id_for_label }}" class="form-control" required
+                                                               value="{% if instance %}{{ instance.subcategorie_name }}{% endif %}" placeholder="Enter subcategorie_name">
+                                                    </div>
+                                                     
+                                                 <br><br>                                               
+                                                </div>
+                                           
+                                            </div> <!-- end col-->
+                                        
+                                            <div class="col-auto">
+                                                {% comment %} <a href="{% url 'maincategorie' %}" class="btn btn-danger"><i class=""></i>Back to Table</a> {% endcomment %}
+                                                {% if instance %}
+                                                    <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Update </button>
+                                                {% else %}
+                                                    <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Save</button>
+                                                {% endif %}
+                                            </div>
+                                            <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br><br>
+                                        </div>
+                                        <!-- end row -->
+
+                                </div> <!-- end card-->
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row-->
+                    </form>
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+
+       {%endblock%}

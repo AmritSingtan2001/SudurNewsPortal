@@ -1,0 +1,122 @@
+
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+{% if instance %}Edit Vertical Ads{% else %}Add Vertical Ads{% endif %}
+{% endblock %}
+{% block body %}
+<title>{% if instance %}Edit Vertical Ads{% else %}Add Vertical Ads{% endif %}
+</title>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">{% if instance %}Edit Vertical Ads{% else %}Add Vertical Ads{% endif %}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                      
+                        <form method="post" enctype="multipart/form-data" action="{% if instance %}{% url 'dashboard:edit_VerticalAds' instance.id %}{% else %}{% url 'dashboard:add_VerticalAds' %}{% endif %}">
+                            {% csrf_token %}
+                                {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert alert-{{ msg.tags }} alert-dismissible text-bg-{{ msg.tags }} border-0 fade show" role="alert">
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <strong>{% if msg.tags == 'success' %}Success{% elif msg.tags == 'warning' %}Warning{% endif %} - </strong>{{ msg.message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                            
+
+                                                <div class="mb-3">
+                                                    <label for="{{ form.name.id_for_label }}" class="form-label">name </label>
+                                                    <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" class="form-control" required
+                                                           value="{% if instance %}{{ instance.name }}{% endif %}" placeholder="Enter name">
+                                                </div>
+                                                
+                  
+                                                <div class="mb-3">
+                                                    <label for="{{ form.page.id_for_label }}" class="form-label">Page</label>
+                                                    <select name="{{ form.page.name }}" id="{{ form.page.id_for_label }}" class="form-select" required>
+                                                      {% for choice_value, choice_label in form.page.field.choices %}
+                                                        <option value="{{ choice_value }}" {% if instance and choice_value == instance.page %}selected{% endif %}>{{ choice_label }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                  </div>
+                                                  
+                                                
+                                            </div> <!-- end col-->
+
+                                            <div class="col-xl-6">
+
+                                                     <!-- Date View -->
+                                                     <div class="mb-3">
+                                                        <label for="{{ form.url.id_for_label }}" class="form-label">Link</label>
+                                                        <input type="url" name="{{ form.url.name }}" id="{{ form.url.id_for_label }}" class="form-control" required
+                                                               value="{% if instance %}{{ instance.url }}{% endif %}" placeholder="Enter  link">
+                                                    </div>
+                                              
+                                                      <div class="mb-3">
+                                                        <label class="form-check-label">
+                                                          <input type="checkbox" name="{{ form.show.name }}" required id="{{ form.show.id_for_label }}" class="form-check-input" {% if instance and instance.show %}checked{% endif %}>
+                                                          Show
+                                                        </label>
+                                                      </div>
+                                                        <div class="mb-3 mt-3 mt-xl-0">
+                                                            <label for="{{ form.image.id_for_label }}" class="form-label">image:</label>
+                                                            <input type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}" class="form-control custom-class" {% if not instance %}required{% endif %} onchange="showPreview(this);">
+                                                            <div id="imageContainer">
+                                                                <img id="imagePreview" src="{% if instance %}{{ instance.image.url }}{% endif %}" alt="">
+                                                            </div>
+                                                        </div>
+                                               <br><br>                                               
+                                           
+                                           
+                                            </div> <!-- end col-->
+                                            
+                                            <div class="col-auto">
+                                                <a href="#" class="btn btn-danger"><i class=""></i>Back to Table</a>
+                                                {% if instance %}
+                                                    <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Update </button>
+                                                {% else %}
+                                                    <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Save</button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <!-- end row -->
+
+                                </div> <!-- end card-->
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row-->
+                    </form>
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+        <!-- END wrapper -->
+
+       {%endblock%}

@@ -1,0 +1,134 @@
+
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+{% if instance %}Edit About Us{% else %}Add About Us{% endif %}
+{% endblock %}
+{% block body %}
+<title>{% if instance %}Edit About Us{% else %}Add About Us{% endif %}
+</title>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">{% if instance %}Edit About Us{% else %}Add About Us{% endif %}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                      
+                        <form method="post" enctype="multipart/form-data" action="{% if instance %}{% url 'dashboard:aboutUs' %}{% else %}{% url 'add_about_us' %}{% endif %}">
+                            {% csrf_token %}
+                                {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert alert-{{ msg.tags }} alert-dismissible text-bg-{{ msg.tags }} border-0 fade show" role="alert">
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <strong>{% if msg.tags == 'success' %}Success{% elif msg.tags == 'warning' %}Warning{% endif %} - </strong>{{ msg.message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="mb-3">
+                                                    <div class="mb-3">
+                                                        <label for="{{ form.chairman.id_for_label }}" class="form-label">chairman </label>
+                                                        <input type="text" name="{{ form.chairman.name }}" id="{{ form.chairman.id_for_label }}" class="form-control" required
+                                                               value="{% if instance %}{{ instance.chairman }}{% endif %}" placeholder="Enter chairman">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="{{ form.ChiefEditor.id_for_label }}" class="form-label">ChiefEditor </label>
+                                                    <input type="text" name="{{ form.ChiefEditor.name }}" id="{{ form.ChiefEditor.id_for_label }}" class="form-control" required
+                                                           value="{% if instance %}{{ instance.ChiefEditor }}{% endif %}" placeholder="Enter ChiefEditor">
+                                                </div>
+
+
+                                                <div class="mb-3">
+                                                    <label for="{{ form.facebookUrl.id_for_label }}" class="form-label">Facebook Link</label>
+                                                    <input type="url" name="{{ form.facebookUrl.name }}" id="{{ form.facebookUrl.id_for_label }}" class="form-control" 
+                                                           value="{% if instance %}{{ instance.facebookUrl }}{% endif %}" placeholder="Enter Facebook link">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="{{ form.twitterUrl.id_for_label }}" class="form-label">Twitter Link</label>
+                                                    <input type="url" name="{{ form.twitterUrl.name }}" id="{{ form.twitterUrl.id_for_label }}" class="form-control" 
+                                                           value="{% if instance %}{{ instance.twitterUrl }}{% endif %}" placeholder="Enter twitter link">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="{{ form.youtubeUrl.id_for_label }}" class="form-label">Youtube Link</label>
+                                                    <input type="url" name="{{ form.youtubeUrl.name }}" id="{{ form.youtubeUrl.id_for_label }}" class="form-control" 
+                                                           value="{% if instance %}{{ instance.youtubeUrl }}{% endif %}" placeholder="Enter Youtube link">
+                                                </div>
+                                            </div> <!-- end col-->
+
+                                            <div class="col-xl-6">
+
+                                                     <!-- Date View -->
+                                                     <div class="mb-3">
+                                                        <label for="{{ form.DepartmentRegistrationNo.id_for_label }}" class="form-label">Department Registration No</label>
+                                                        <input type="number" name="{{ form.DepartmentRegistrationNo.name }}" id="{{ form.DepartmentRegistrationNo.id_for_label }}" class="form-control" required
+                                                               value="{% if instance %}{{ instance.DepartmentRegistrationNo }}{% endif %}" placeholder="Enter Department Registration No">
+                                                    </div>
+                                                     <div class="mb-3">
+                                                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                                                        <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" class="form-control" required
+                                                               value="{% if instance %}{{ instance.email }}{% endif %}" placeholder="Enter email">
+                                                    </div>
+                                                     <div class="mb-3">
+                                                        <label for="{{ form.contactNo.id_for_label }}" class="form-label">Contact Number</label>
+                                                        <input type="number" name="{{ form.contactNo.name }}" id="{{ form.contactNo.id_for_label }}" class="form-control" required
+                                                               value="{% if instance %}{{ instance.contactNo }}{% endif %}" placeholder="Enter Contact No">
+                                                    </div>
+                                                  
+                                                    <div class="mb-3 mt-3 mt-xl-0">
+                                                        <label for="{{ form.logo.id_for_label }}" class="form-label">logo :</label>
+                                                        <input type="file" name="{{ form.logo.name }}" id="{{ form.logo.id_for_label }}" class="form-control custom-class" {% if not instance %}required{% endif %} onchange="showPreview(this);">
+                                                        <div id="imageContainer" style="width:auto">   
+                                                            <img class="img-fluid" id="imagePreview" src="{% if instance %}{{ instance.logo.url }}{% endif %}" alt="" >
+                                                        </div>
+                                                    </div><br><br>                                               
+                                                </div>
+                                           
+                                            </div> <!-- end col-->
+                                            
+                                            <div class="col-auto">
+                                            {% if instance %}
+                                                <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Update About Us</button>
+                                            {% else %}
+                                                <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Add About Us</button>
+                                            {% endif %}
+                                            </div>
+                                        </div>
+                                        <!-- end row -->
+
+                                </div> <!-- end card-->
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row-->
+                    </form>
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+       {%endblock%}

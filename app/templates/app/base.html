@@ -1,0 +1,442 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block metatag %}
+
+{% endblock %}
+<title>सुदुर कचहरी | 
+    {% block title  %}
+
+    {% endblock %}
+</title>
+<link rel="stylesheet" href="{% static 'app/style/style.css' %}">
+<link rel="icon" href="{% static 'app/images/icons.jpeg' %}" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/slick/slick.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/slick/slick-theme.css' %}" />
+
+
+<!-- load more  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js" integrity="sha512-fHXRw0CXruAoINU11+hgqYvY/PcsOWzmj0QmcSOtjlJcqITbPyypc8cYpidjPurWpCnlB8VKfRwx6PIpASCUkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/infinity/0.2.2/infinity.min.js" integrity="sha512-zIld33hnBUgZ8xSfxckJYzY2kSTt+jlnrhyxiM/sxScvw0MH3YIsalET2UtbBcevJNMeoUFIWdPoW7xc35vJLg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+</head>
+
+<body>
+<div class="logo w-full flex justify-between items-center px-5  ">
+    <a href="/">
+        <img src="{{aboutUS.logo.url}}" alt="" class="w-64 h-28 px-3 ">
+    </a>
+   <div class="px-3 flex hidden sm:block text-2xl" style="display: inline-flex;">
+    <i class="fa fa-calendar" style="font-size:20px;color:red; padding-top:1px;"></i>
+    <iframe style="position: relative; top: 0px; padding-left: 10px; text-style:bold; " scrolling="no" border="0" frameborder="0" marginwidth="0" marginheight="0" allowtransparency="true" src="https://www.ashesh.com.np/linknepali-time.php?dwn=only&amp;font_color=c40228&amp;font_size=16&amp;font_weight=bolder&amp;bikram_sambat=0&amp;format=dmyw&amp;api=962173k280" width="165" height="22"></iframe>
+   </div>
+
+    
+</div>
+
+
+<!-- navbar -->
+<div class="navbar  text-white mt-2 w-full relative z-40 sticky top-0  " style="background:#03406f;">
+    <ul class="flex p-2 justify-center items-center  ">
+        <div class="flex items-center  menu gap-2">
+            <img id="logo" src="{{aboutUS.logo.url}}" class="hidden h-10 w-16 mx-3" alt="Logo">
+            <li>
+                <a href="/" class="px-3 text-xl ">
+                    होमपेज
+                </a>
+            </li>
+            {% if allCategories %}
+            {% for categorie in allCategories %}
+            <li>
+                <a href="{%  url 'ctgRelatedNews' categorie.main_ctg_slug %}" class="px-3 text-xl ">
+                    {{categorie.categorie_name}}
+                </a>
+            </li>
+            {% endfor %}
+            {% endif %}
+           
+          
+            <li class="annay cursor-pointer h-full ">
+                <p class="px-2 ml-3 text-xl py-4"> अन्य</p>
+                {% if othermenu %}
+                <div class=" justify-around  bg-white text-black absolute z-50 p-3 annaypage  top-16 ">
+                    <div class="card w-52">
+                       {% for categorie in othermenu%}
+                        <a href="{%  url 'ctgRelatedNews' categorie.main_ctg_slug %}" class="text-gray-700 block px-2 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">{{categorie.categorie_name}}</a>
+                        <hr>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </li>
+
+
+            <li class="">
+
+                <i class="fa-regular fa-clock text-xl px-3 cursor-pointer"></i>
+
+
+            </li>
+            <li>
+
+                <i class="fa-solid fa-chart-line text-xl px-3 cursor-pointer"></i>
+
+            </li>
+
+        </div>
+        <div class="flex items-center   dash">
+            <a href="{% url 'dashboard:index'  %}" target="_blank">
+                <i class="fa-solid fa-user text-xl px-3"></i>
+            </a>
+
+            <i class="fas fa-bars text-2xl px-3 cursor-pointer"></i>
+        </div>
+
+    </ul>
+
+</div>
+
+<div class="w-full bg-white  absolute top-0 border text-black z-50 tajaupdate shadow-lg">
+    <div class=" w-full border justify-between flex items-center ">
+        <h1 class="text-3xl px-10 py-5 font-bold" style="color:#03406f;">ताजा अपडेट</h1>
+        <i class="fas fa-times pr-5 cursor-pointer"></i>
+    </div>
+
+    <hr>
+    <div class="flex flex-wrap justify-center gap-5 pt-3 pb-3">
+        {% for news in recentNews %}
+        {% if forloop.counter|divisibleby:2 %}
+        <div class="update1 flex flex-col justify-between flex-wrap  border-r-2  gap-5 w-96 ">
+            
+            <a href="{% url  'newsDetails' news.news_slug  %}">
+                <div class="up1 flex justify-between items-center  ">
+                    <span class="text-2xl text-gray-400 pr-2" class="text-gray-400 text-2xl pr-2">{{forloop.counter}}</span>
+                    <img src="{{news.image.url}}"
+                        alt="" class="w-24 h-16 rounded">
+                    <p class="p-3">{{news.title|truncatechars:50}}</p>
+                </div>
+            </a>
+            
+        </div>
+        {% else %}
+        <div class="update2 w-96 gap-5 flex flex-col  border-r-2 ">
+            <a href="{% url  'newsDetails' news.news_slug  %}">
+                <div class="up1 flex justify-between items-center  ">
+                    <span class="text-2xl text-gray-400 pr-2" class="text-gray-400 text-2xl pr-2">{{forloop.counter}}</span>
+                    <img src="{{news.image.url}}"
+                        alt="" class="w-24 h-16 rounded">
+                    <p class="p-3">{{news.title|truncatechars:50}}</p>
+                </div>
+            </a>
+            
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+<!-- Trendings -->
+<div class="w-full bg-white  absolute top-0 border text-black z-50 trend shadow-lg">
+    <div class=" w-full border justify-between flex items-center ">
+        <h1 class="text-3xl px-10 py-5 font-bold " style="color:#03406f;">ट्रेन्डिङ</h1>
+        <i class="fas fa-times pr-5 cursor-pointer"></i>
+    </div>
+
+    <hr>
+    <div class="flex flex-wrap justify-between gap-5 p-5">
+        {% for news in alltreandingNews %}
+        {% if forloop.counter|divisibleby:2 %}
+        <div class="update1 flex flex-col justify-between flex-wrap  border-r-2  gap-5 w-96 ">
+            
+            <a href="{% url  'newsDetails' news.news_slug  %}">
+                <div class="up1 flex justify-between items-center  ">
+                    <span class="text-2xl text-gray-400 pr-2" class="text-gray-400 text-2xl pr-2">{{forloop.counter}}</span>
+                    <img src="{{news.image.url}}"
+                        alt="" class="w-24 h-16 rounded">
+                    <p class="p-3">{{news.title|truncatechars:50}}</p>
+                </div>
+            </a>
+            
+        </div>
+        {% else %}
+        <div class="update2 w-96 gap-5 flex flex-col  border-r-2 ">
+            <a href="{% url  'newsDetails' news.news_slug  %}">
+                <div class="up1 flex justify-between items-center  ">
+                    <span class="text-2xl text-gray-400 pr-2" class="text-gray-400 text-2xl pr-2">{{forloop.counter}}</span>
+                    <img src="{{news.image.url}}"
+                        alt="" class="w-24 h-16 rounded">
+                    <p class="p-3">{{news.title|truncatechars:50}}</p>
+                </div>
+            </a>
+            
+        </div>
+        {% endif %}
+        {% endfor %}
+        
+    </div>
+
+</div>
+
+
+
+<!-- toggle bars -->
+
+<div class="bar md:w-1/4 sm:w-3/5 h-auto shadow-lg  bg-white px-5 py-5 z-50 fixed ">
+    <div class="flex justify-end cursor-pointer"><i class="fas fa-times"></i></div>
+
+    <div class="flex items-center  ">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf9l5w_2q0r9O_tCJjpGvfCZtjAaMc-mMezQ&usqp=CAU"
+            class="w-8 h-8 rounded-full">
+        <a href="/">
+            <p class="ml-4 text-sm py-3">होमपेज</p>
+        </a>
+    </div>
+    {% if allCategories %}
+    {% for categorie in allCategories %}
+    <div class="flex items-center mt-1 ">
+        <img src="{% if categorie.icons %} {{categorie.icons.url}} {% endif %}"
+            class="w-8 h-8 rounded-full">
+        <a href="{%  url 'ctgRelatedNews' categorie.main_ctg_slug %}">
+            <p class="ml-4 text-sm py-3">{{categorie.categorie_name}}</p>
+        </a>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+<br>
+{% if othermenu %}
+    <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5  text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        
+        <img src="https://cdn-icons-png.flaticon.com/128/3388/3388759.png"
+                class="w-8 h-8 rounded-full">
+            <a href="">
+                <p class="ml-4 text-sm py-3" > अन्य</p>
+            </a>
+            
+        <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+    </svg></button>
+
+    <!-- Dropdown menu -->
+    <div id="dropdownInformation" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-full dark:bg-gray-700 dark:divide-gray-600">
+        
+        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
+            {% for menu in othermenu %}
+            <li>
+                <a href="{%  url 'ctgRelatedNews' menu.main_ctg_slug %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{menu.categorie_name}}</a>
+            </li>
+            <hr>
+            {% endfor %}
+
+           
+            
+        </ul>
+       
+        
+    </div>
+    {% endif %}
+
+
+
+</div>
+
+
+{% block content %}
+
+{% endblock %}
+    <!-- Footer -->
+
+    <footer aria-label="Site footer" class=" bg-gradient-to-b px-8 py-12 " style="background-color:#03406f;">
+        <div class="mx-auto max-w-screen-xl">
+            <div class="grid grid-cols-12 gap-y-8 sm:gap-8 ">
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
+                    
+                    <ul class="flex flex-col gap-y-2">
+                        <li class="text-lg font-medium text-gray-200 text-2xl"> विज्ञापन को लागी सुदुर कचहरी</li>
+
+                        <li>
+                            <a class="cursor-pointer  text-gray-300 hover:text-gray-300/60"> E-mail:{{aboutUS.email}}</a>
+                        </li>
+                        <li>
+                            <a class="cursor-pointer  text-gray-300 hover:text-gray-300/60"> Phone Number:{{aboutUS.contactNo}}</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
+                    <ul class="flex flex-col gap-y-2 ">
+                        <li class="text-lg font-medium text-gray-200 text-2xl">समाचार</li>
+
+                        {% for menu in allCategories|slice:"5"%}
+                        <li>
+                            <a href="{%  url 'ctgRelatedNews' menu.main_ctg_slug %}" class="cursor-pointer text-gray-300 hover:text-gray-300/60"> {{menu.categorie_name}}</a>
+                        </li>
+                        {% endfor %}
+                       
+                       
+                    </ul>
+                </div>
+             
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
+                    <ul class="flex flex-col gap-y-2">
+                        <li class="text-lg font-medium text-gray-200 text-2xl">सुदुर कचहरी </li>
+
+
+                        <li>
+                            <a href="{% url 'ourteam' %}" class="cursor-pointer  text-gray-300 hover:text-gray-300/60"> हाम्रो टीम</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'privacypolicy' %}" class="cursor-pointer  text-gray-300 hover:text-gray-300/60"> प्राइभेसी पोलिसी</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contact' %}" class="cursor-pointer  text-gray-300 hover:text-gray-300/60"> सम्पर्क</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-3">
+                    <div>
+
+
+                        <ul class="gap-y-2 ">
+                            <li class="text-lg font-medium text-gray-200 text-2xl">ट्रेन्डिङ समाचार </li>
+                            {% for news in trendingNews %}
+                            <li>
+                                <a class="cursor-pointer  text-gray-300 hover:text-gray-300/60 pt-2" href="{% url  'newsDetails' news.news_slug  %}"> {{news.title|truncatechars:30}}</a>
+                            </li>
+                            {% endfor %}
+                           
+                            
+
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Info section -->
+    <div class="flex  flex-wrap  items-center justify-between text-sm px-5 pb-3 infosection">
+        <img src="{{aboutUS.logo.url}}" alt="" class="w-40 h-20  pt-3">
+        <div class="w-44">
+            <p>
+                अध्यक्ष तथा प्रबन्ध निर्देशक:<br>
+                <span class="font-bold">{{aboutUS.chairman}}</span>
+            </p>
+        </div>
+        <div class="w-44">
+            <p>प्रधान सम्पादकः
+                <br>
+                <span class="font-bold"> {{aboutUS.ChiefEditor}}</span>
+
+            </p>
+        </div>
+        <div class="w-44">
+            <p>सूचना विभाग दर्ता नं.<br>
+                
+                {{aboutUS.DepartmentRegistrationNo}}</p>
+        </div>
+        <div class="w-44">
+            <p>{{aboutUS.contactNo}},<br>
+                {{aboutUS.email}}</p>
+        </div>
+        <div class="w-44">
+            {% if aboutUS.facebookUrl %}
+            <a href="{{aboutUS.facebookUrl}}" target="_blank"><i class="fab fa-facebook text-xl cursor-pointer"></i></a>
+            {% endif %}
+
+            {% if aboutUS.twitterUrl %}
+            <a href="{{aboutUS.twitterUrl}}" target="_blank"><i class="fab fa-twitter pl-2 ml-2 text-xl cursor-pointer"></i></a>
+            {% endif %}
+
+            {% if aboutUS.youtubeUrl %}
+            <a href="{{aboutUS.youtubeUrl}}" target="_blank"><i class="fab fa-youtube pl-2 ml-2 text-xl cursor-pointer"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    <div class="flex  flex-wrap  items-center justify-center text-sm px-5  pt-3 pb-3 infosection text-center bg-slate-300">
+        <h6 class="justify-center">© सुदुर कचहरी, All Right Reserved.</h6>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="{% static 'app/script/script.js' %}"></script>
+  
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.slide').slick({
+                arrows: true,
+                prevArrow: '<button type="button" class="slick-prev absolute top-28 left-5   text-white  rounded-full z-10"><i class="fas fa-arrow-left" style="background-color:orange;color:white;width:30px;height:30px;border-radius:50px; padding-top:6px;"></i></button>',
+                nextArrow: '<button type="button" class="slick-next absolute top-28 right-5  text-white  rounded-full z-10"><i class="fas fa-arrow-right" style="background-color:orange;color:white;width:30px;height:30px;border-radius:50px; padding-top:6px;"></i></button>',
+                centerPadding: '40px',
+                slidesToShow: 4,
+                responsive: [
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            arrows: true,
+                            prevArrow: '<button type="button" class="slick-prev absolute top-28 left-5   text-white  rounded-full z-10"><i class="fas fa-arrow-left" style="background-color:orange;color:white;width:30px;height:30px;border-radius:50px; padding-top:4px;"></i></button>',
+                            nextArrow: '<button type="button" class="slick-next absolute top-28 right-5  text-white  rounded-full z-10"><i class="fas fa-arrow-right" style="background-color:orange;color:white;width:30px;height:30px;border-radius:50px; padding-top:4px;"></i></button>',
+                            centerPadding: '20px',
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            arrows: true,
+                            prevArrow: '<button type="button" class="slick-prev absolute top-28 left-5   text-white  rounded-full z-10"><i class="fas fa-arrow-left" style="background-color:orange;color:white;width:30px;height:30px;border-radius:50px; padding-top:4px;"></i></button>',
+                            nextArrow: '<button type="button" class="slick-next absolute top-28 right-5  text-white  rounded-full z-10"><i class="fas fa-arrow-right" style="background-color:orange;color:white;width:30px;height:30px;border-radius:50px; padding-top:4px;"></i></button>',
+                            centerPadding: '20px',
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+    <script>
+        function markAsActive(event, currentLink) {
+            // event.preventDefault();
+            const links = document.querySelectorAll('.nav-link');
+
+            // Remove the "active" class from the previously clicked link
+            links.forEach(link => link.classList.remove('active'));
+
+            // Add the "active" class to the clicked link
+            currentLink.classList.add('active');
+        }
+    </script>
+
+    <script>
+        // Get the button element and the dropdown menu element
+        const dropdownButton = document.getElementById('dropdownInformationButton');
+        const dropdownMenu = document.getElementById('dropdownInformation');
+        
+        // Add a click event listener to the button
+        dropdownButton.addEventListener('click', () => {
+          dropdownMenu.classList.toggle('hidden'); // Toggle the 'hidden' class
+        });
+    </script>
+       
+   
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+{% extends 'app/base.html' %}
+{% block title %}
+Contact Us
+{% endblock %}
+{% block content %}
+<div class="container mx-auto flex   justify-start   mt-5 mb-5">
+
+    <div class="mx-10">
+        {{contact.contactus|safe}}
+    </div>
+</div>
+
+{% endblock %}

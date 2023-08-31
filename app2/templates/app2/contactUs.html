@@ -1,0 +1,107 @@
+
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+{% if instance %}Edit Contact Us{% else %}Add Contact Us{% endif %}
+{% endblock %}
+{% block body %}
+<title>{% if instance %}Edit Contact Us{% else %}Add Contact Us{% endif %}
+</title>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">{% if instance %}Edit Contact Us{% else %}Add Contact Us{% endif %}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                      
+                        <form method="post" enctype="multipart/form-data" action="{% url 'dashboard:contactUs' %}">
+                            {% csrf_token %}
+                                {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert alert-{{ msg.tags }} alert-dismissible text-bg-{{ msg.tags }} border-0 fade show" role="alert">
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <strong>{% if msg.tags == 'success' %}Success{% elif msg.tags == 'warning' %}Warning{% endif %} - </strong>{{ msg.message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                          
+
+                                                <div class="mb-3">
+                                                    <label for="{{ form.title.id_for_label }}" class="form-label">title </label>
+                                                    <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="form-control" required
+                                                           value="{% if instance %}{{ instance.title }}{% endif %}" placeholder="Enter title">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="{{ form.contactus.id_for_label }}" class="form-label">Custom Contact</label>
+                                                    <textarea id="editor" name="{{ form.contactus.name }}" rows="10" required placeholder="Enter Contact">{% if instance %}{{ instance.contactus }}{% endif %}</textarea>
+                                                </div><br><br>
+                                                
+                       
+                                            </div><br><br> <!-- end col-->
+
+                                       
+                                        </div>
+                                        <div class="col-auto">
+                                            {% comment %} <a href="#" class="btn btn-danger"><i class=""></i>Back to Table</a> {% endcomment %}
+                                            {% if instance %}
+                                                <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Update </button>
+                                            {% else %}
+                                                <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Save</button>
+                                            {% endif %}
+                                        </div>
+                                        <!-- end row -->
+
+                                </div> <!-- end card-->
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row-->
+                    </form>
+                    <!-- Your form and other content -->
+
+                    <script>
+                        ClassicEditor
+                            .create(document.querySelector('#editor'))
+                            .catch(error => {
+                                console.error(error);
+                            });
+                    </script>
+
+                
+                    
+                    
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+        <!-- END wrapper -->
+
+       {%endblock%}

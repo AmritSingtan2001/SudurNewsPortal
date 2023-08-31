@@ -1,0 +1,705 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+
+    <!-- Banner Section -->
+    {% if firstads %}
+    <a href="{{firstads.url}}" target="_blank">
+        <div class="addbanner ">
+            <img src="{{firstads.image.url}}" alt=""
+                class="w-5/6 m-auto mt-5">
+            <hr class="w-5/6 m-auto mt-5">
+
+        </div>
+    </a>
+    {% endif %}
+
+    <!-- herosection -->
+    {% if firstnews %}
+    <div class="hero">
+        {% for news in firstnews %}
+        <p class="md:text-center sm:text-justify font-bold md:text-5xl sm:text-2x1 mx-10 pt-5 tracking-wide md:leading-relaxed">
+            <a href="{% url  'newsDetails' news.news_slug  %}" class="title newsheading" >
+                {{news.title}}
+            </a>
+        </p>
+        
+
+        <div class="flex justify-center pt-5">
+            <div class=" flex items-center item  cursor-pointer">
+                <img src="{% if news.repoter.image %}{{news.repoter.image.url}}{% else %} {% static 'app/images/unknown.jpg' %} {% endif %}"
+                    class="w-6 h-6 rounded-full" alt="Image 1">
+                <h3 class="pl-2 font-bold" style="font-size:12px;">{{news.repoter.fullname}}</h3>
+            </div>
+            <div class=" flex items-center items-center  cursor-pointer ml-4 ">
+                <i class="fas fa-clock"></i>
+                <h3 class="pl-2 font-bold" style="font-size:12px;"> {{ news.create_date|timesince }}
+
+                    </h3>
+            </div>
+            <div class=" flex items-center items-center  cursor-pointer ml-4">
+                <i class="fas fa-message"></i>
+                <h3 class="pl-2 font-bold" style="font-size:12px;"> 0</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image section -->
+    <div class="w-full firstimg" style="width:100%;height:600px;overflow: hidden; ">
+        <img src="{% if news %}{{news.image.url}} {% endif %}"
+            alt="" class="pt-5" style="width:95%;height:auto;margin:auto;">
+
+    </div>
+    <p class="text-lg  p-10 px-30 text-gray-400 padd " style="text-align: justify;">
+        {{news.discriptions|safe|striptags|truncatewords:80}}
+    </p>
+    <hr class="w-5/6 m-auto mt-3">
+    {% endfor %}
+    {% endif %}
+
+
+
+    <!-- Koshi pradesh  -->
+    {% if secondthirdNews %}
+    {% for news in secondthirdNews %}
+    <p class="md:text-center sm:text-justify md:pt-2 text-5xl  md:px-28 sm:px-5 mx-10 font-bold md:leading-relaxed " >
+        <a href="{% url  'newsDetails' news.news_slug  %}" style="color:#03406f;" class="title newsheading">
+        {{news.title}}
+        </a>
+    </p>
+
+
+    <div class="flex justify-center pt-3">
+        <div class=" flex items-center item  cursor-pointer">
+            <img src="{% if news.repoter.image %}{{news.repoter.image.url}}{% else %} {% static 'app/images/unknown.jpg' %} {% endif %}"
+                class="w-6 h-6 rounded-full" alt="Image 1">
+            <h3 class="pl-2 font-bold" style="font-size:12px;">{{news.repoter.fullname}}</h3>
+        </div>
+        <div class=" flex items-center items-center  cursor-pointer ml-4 ">
+            <i class="fas fa-clock"></i>
+            <h3 class="pl-2 font-bold" style="font-size:12px;">{{news.create_date|timesince}}</h3>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <hr class="mt-5 w-5/6 m-auto">
+
+    <!-- Content -->
+
+    <div class="flex flex-wrap content w-full justify-around p-5  gap-3">
+        {% for news in allnews|slice:":1" %}
+        <div class="img relative ">
+            <img src="{{news.image.url}}" alt="" style="" class=" section0102 cursor-pointer">
+            <p class="absolute  z-5 bottom-5 text-5xl text-white p-5 font-bold leading-tight">
+                <a href="{% url  'newsDetails' news.news_slug  %}" class="section0102-txt title1">
+                {{news.title}}
+                </a>
+            </p>
+        </div>
+        {% endfor %}
+
+         <!-- middle -->
+        <div class="imgcontent flex flex-col w-110 gap-y-4">
+            {% for news in allnews|slice:"1:6" %}
+            <a href="{% url  'newsDetails' news.news_slug  %}">
+                <div class="content flex items-center ">
+
+                    <img src="{{news.image.url}}"
+                        alt="news image" class="w-36 h-24" style="object-fit:cover;">
+                    <div class="pl-5">
+                        <p class="font-thin">
+                            <a href="{% url  'newsDetails' news.news_slug  %}" class="title2">
+                                <h2>
+                                {{news.title|truncatechars:30}}
+                                </h2>
+                            </a>    
+                        </p>
+                        <i class="fas fa-clock text-gray-400"></i>
+                        <span style="font-size:12px;padding-left:5px;">{{news.create_date|timesince}} </span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            
+            <button class="text-center p-2 " style="background-color:#03406f;color:white;"><i
+                    class="fas fa-clock pr-3"></i>२४
+                घन्टाका
+                ताजा अपडेट</button>
+
+        </div>
+       
+
+        <div class="thirdimg flex flex-col gap-y-7">
+            
+            {% if verticalAds %}
+                {% for ads in verticalAds|slice:"3" %}
+                <a href="{{ads.url}}" target="_blank">
+                    <img src="{{ads.image.url}}" alt=""
+                        style="width:300px;height:180px;">
+                </a>
+                {% endfor %}
+            {% endif %}
+           
+        </div>
+
+    </div>
+
+    <hr class="w-5/6 m-auto mt-5">
+
+    <!--  Banner-->
+    {% if horizontalSecondAds  %}
+    <a href="{{horizontalSecondAds.url}}" target="_blank">
+        <div class="addbanner">
+            <img src="{{horizontalSecondAds.image.url}}" alt=""
+                class="w-11/12 m-auto mt-5">
+            <hr class="w-5/6 m-auto mt-5">
+        </div>
+    </a>
+    {% endif %}
+
+    <!--Samachar  -->
+    <div class="flex flex-wrap justify-around auto p-2 gap-10 ">
+        <div class="samacharcontent  md:w-4/6 sm:w-full ">
+            <div class="flex items-center flex-wrap">
+            <h1 class=" text-3xl font-bold" style="color:#03406f;">{{firstCategorie.categorie_name}}</h1>
+                {% if firstCategorie.categorie.all %}
+                    {% for subCtg in firstCategorie.categorie.all|slice:"8" %}
+                        <span class="pl-5 text-sm text-gray-500 border-r-2 pr-2 cursor-pointer ml-2 border-gray-300 font-bold">
+                            <a href="{% url 'subCtgNews' subCtg.subctgslug %}">{{subCtg.subcategorie_name}}</a>
+                        </span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+
+            {% for news in firstCategorieNews|slice:1%}
+            <div class="flex  flex-wrap mt-5 cont" style="background-color:#03406f;">
+                <img src="{{news.image.url}}" class="object-cover "
+                    alt="" style="width:350px;height:350px;">
+                <div class="md:w-1/2 sm:w-full mx-auto mt-4 overflow-hidden"  >
+                    <h1 class=" text-3xl px-5 pt-3 font-bold w-full text-justify leading-tight text-white">
+                        <a href="{% url  'newsDetails' news.news_slug  %}">
+                            {{news.title}}
+                        </a>
+                    </h1>
+                    <p class="px-5 pt-3 text-white text-justify w-full">
+                        {{news.discriptions|safe|striptags|truncatewords:50}}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="flex  flex-wrap justify-between hello   w-full mt-10 gap-y-5  ">
+                <div class="samacharminicontent  flex flex-col gap-5   " >
+                    {% for news in firstCategorieNews|slice:"1:6"%}
+                    <div class="content1 flex w-11/12 cursor-pointer">
+                        <img src="{% if news.image %} {{news.image.url}} {% endif %}"
+                            alt=" no image found." class="w-28 rounded">
+                        <p class="px-3 pt-1 w-64  ">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="samacharminicontent flex flex-col gap-5   cursor-pointer ">
+                    {% for news in firstCategorieNews|slice:"6:12"%}
+                    <div class="content1 flex w-11/12 cursor-pointer">
+                        <img src="{% if news.image %} {{news.image.url}} {% endif %}"
+                            alt=" no image" class="w-28 rounded">
+                        <p class="px-3 pt-1 w-64  ">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </div>
+                    {% endfor %}
+                   
+
+                </div>
+            </div>
+
+        </div>
+        <div class="banners  flex flex-col gap-y-5  hidden sm:block ">
+            {% if verticalAds %}
+                {% for ads in verticalAds|slice:"3:6"%}
+                <a href="{{ads.url}}"  target="_blank">
+                    <img src="{{ads.image.url}}" alt=""
+                        style="width:300px;height:180px;">
+                </a>
+                {% endfor %}
+            {% endif %}
+            
+        </div>
+    </div>
+    <!-- banner -->
+    <a href="{{horizontalThirdAds.url}}" target="_blank">
+        <div class="addbanner ">
+            <img src="{{horizontalThirdAds.image.url}}" alt=""
+                class="w-11/12 h-24 m-auto mt-10">
+            <hr class="w-5/6 m-auto mt-5">
+        </div>
+    </a>
+
+
+    <!-- Business Part -->
+    <div class="flex flex-wrap justify-around  auto p-5 gap-10 ">
+        <div class="samacharcontent  md:w-4/6 sm:w-full ">
+            <div class="flex items-center flex-wrap">
+                {% for news in secondCategorie %}
+                <h1 class="text-3xl font-bold"  style="color:#03406f;">{{news.categorie_name}}</h1>
+                    {% if news.categorie.all %}
+                        {% for subCtg in news.categorie.all|slice:"8" %}
+                            <span class="pl-5 text-sm text-gray-500 border-r-2 pr-2 cursor-pointer ml-2 border-gray-300 font-bold">
+                                <a href="{% url 'subCtgNews' subCtg.subctgslug %}" >{{subCtg.subcategorie_name}}</a>
+                            </span>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                
+                
+                </div>
+            {% for news in scondNewsSection|slice:"1"%}
+            
+            <div class="flex  flex-wrap mt-5 cont" style="background-color:#03406f;">
+                <img src="{{news.image.url}}" class="object-cover "
+                    alt="" style="width:350px;height:350px;">
+                <div class="md:w-1/2 sm:w-full mx-auto mt-4 overflow-hidden"  >
+                    <h1 class=" text-3xl px-5 pt-3 font-bold w-full text-justify leading-tight text-white">
+                        <a href="{% url  'newsDetails' news.news_slug  %}">
+                            {{news.title}}
+                        </a>
+                    </h1>
+                    <p class="px-5 pt-3 text-white text-justify w-full">
+                        {{news.discriptions|safe|striptags|truncatewords:50}}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="flex  flex-wrap justify-between hello   w-full mt-10 gap-y-5  ">
+                <div class="samacharminicontent  flex flex-col gap-5 ">
+                    {% for news in scondNewsSection|slice:"1:4"%}
+                    <div class="content1 flex w-11/12 cursor-pointer">
+                        <img src="{{news.image.url}}"
+                            alt="" class="w-28 rounded">
+                        <p class="px-3 pt-1 w-60 ">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                <div class="samacharminicontent flex flex-col gap-5   cursor-pointer ">
+                    {% for news in scondNewsSection|slice:"6:9"%}
+                    <div class="content1 flex w-11/12 cursor-pointer">
+                        <img src="{{news.image.url}}"
+                            alt="" class="w-28 rounded">
+                        <p class="px-3 pt-1 w-60 ">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </div>
+                    {% endfor %}
+                   
+
+                </div>
+
+            </div>
+            {% if horizontalFourthAds.image %}
+            <div class="addbanner ">
+                <a href="{{horizontalFourthAds.url}}" target="_blank">
+                    <img src="{{horizontalFourthAds.image.url}}" alt=""
+                    class="w-full m-auto mt-10">
+                </a>
+            </div>
+            {% endif %}
+            <div class="flex  flex-wrap justify-between hello   w-full mt-10 gap-y-5  " >
+                <div class="samacharminicontent  flex flex-col gap-5   " >
+                    {% for news in scondNewsSection|slice:"7:9"%}
+                    <div class="content1 flex w-11/12 cursor-pointer">
+                        <img src="{{news.image.url}}"
+                            alt="" class="w-28 rounded">
+                        <p class="px-3 pt-1 w-60 ">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </div>
+                    {% endfor %}
+
+
+
+                </div>
+                <div class="samacharminicontent flex flex-col gap-5   cursor-pointer " style="background-color:#03406f;">
+                    {% for news in scondNewsSection|slice:"9:11"%}
+                    <div class="content1 flex w-11/12 cursor-pointer">
+                        <img src="{{news.image.url}}"
+                            alt="" class="w-28 rounded">
+                        <p class="px-3 pt-1 w-60 cursor-pointer mt-3">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </div>
+                    {% endfor %}
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="banners  flex flex-col gap-y-5 ">
+            <div class="shadow-lg px-5 ban " style="width:350px;">
+                <button class="mx-2 my-2 px-2 rounded text-white" style="background-color:#03406f;">कर्पोरेट</button>
+                {% for news in scondNewsSection|slice:"9:16"%}
+                <p class="w-64 pl-4 py-4  cursor-pointer mt-3">
+                    <a href="{% url  'newsDetails' news.news_slug  %}">
+                        {{news.title}}
+                    </a>
+                </p>
+                <hr class="w-5/6 m-auto">
+                {% endfor %}
+
+                <button class=" w-20 m-5 p-1 rounded-full bg-gray-200 text-blue-500" >सबै <i
+                        class="fas fa-chevron-right text-sm"></i></button>
+            </div>
+            <div class="hidden sm:block">
+                {% if verticalAds%}
+                {% for ads in verticalAds|slice:"6:9" %}
+                <a href="{{ads.url}}" target="_blank">
+                    <img src="{{ads.image.url}}" alt=""
+                        style="width:350px;height:150px;">
+                </a>
+                {% endfor %}
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+    <!-- banner -->
+    {% if horizontalFifthAds.image %}
+    <a href="{{horizontalFifthAds.url}}" target="_blank">
+        <div class="addbanner ">
+            <img src="{{horizontalFifthAds.image.url}}" alt=""
+                class="w-11/12 m-auto mt-10">
+            <hr class="w-5/6 m-auto mt-5">
+        </div>
+    </a>
+    {% endif %}
+
+    <!-- Pradesh Samachar -->
+
+    <div class="flex flex-wrap justify-around  auto p-5 gap-5 ">
+        <div class="samacharcontent  md:w-4/6 sm:w-full ">
+            
+            {% for news in thirdCategorie%}
+            <div class="flex items-center flex-wrap">
+                <h1 class=" text-3xl font-bold" style="color:#03406f;">{{news.categorie_name}}</h1>
+                {% if news.categorie.all %}
+                    {% for subCtg in news.categorie.all|slice:"8" %}
+                    <span class="pl-5 text-sm text-gray-500 border-r-2 pr-2 cursor-pointer ml-2 border-gray-300 font-bold">
+                        <a href="{% url 'subCtgNews' subCtg.subctgslug %}">{{subCtg.subcategorie_name}}</a>
+                    </span>
+                    {% endfor %}
+                {% endif %}
+                
+            </div>
+            {% endfor %}
+            <hr class="mt-3">
+            {% for news in thirdSectionNews|slice:"1"%}
+            <div class="flex  flex-wrap mt-5 cont" style="background-color:#03406f;">
+                <img src="{{news.image.url}}" class="object-cover "
+                    alt="" style="width:350px;height:350px;">
+                <div class="md:w-1/2 sm:w-full mx-auto mt-4 overflow-hidden"  >
+                    <h1 class=" text-3xl px-5 pt-3 font-bold w-full text-justify leading-tight text-white">
+                        <a href="{% url  'newsDetails' news.news_slug  %}">
+                            {{news.title}}
+                        </a>
+                    </h1>
+                    <p class="px-5 pt-3 text-white text-justify w-full">
+                        {{news.discriptions|safe|striptags|truncatewords:60}}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="flex  flex-wrap justify-between hello   w-full mt-10 gap-y-5  ">
+                {% for news in  thirdSectionNews|slice:"1:10"%}
+                <div class="card w-60 h-auto ">
+                    <a href="">
+                        <img src="{{news.image.url}}"
+                            alt="" class="w-60 h-40 rounded">
+                        <p class="py-5 px-2">
+                            <a href="{% url  'newsDetails' news.news_slug  %}">
+                                {{news.title|truncatechars:50}}
+                            </a>
+                        </p>
+                    </a>
+                </div>
+                {% endfor   %}
+              
+
+
+            </div>
+
+
+        </div>
+        <div class="banners  flex flex-wrap flex-col gap-y-5 ">
+            <div class=" p-2 " style="width:350px;">
+                <h1 class=" mx-2 my-2 px-2 rounded text-4xl font-bold " style="color:#03406f;">ट्रेन्डिङ</h1>
+                <hr>
+                {% for news in  treandingNews%}
+                <div class="flex  tranding  items-center justify-center cursor-pointer ">
+                    <h1 class="text-4xl text-gray-300">{{forloop.counter}}</h1>
+                    <p class="w-64 pl-5 py-4  ">
+                        <a href="{% url  'newsDetails' news.news_slug  %}">
+                            {{news.title|truncatechars:60}}
+                        </a>
+                    </p>
+                    <img src="{{news.image.url}}"
+                        alt="" class="w-24 h-14  rounded">
+                </div>
+                <hr class="w-5/6 m-auto">
+                {% endfor %}
+
+
+
+            </div>
+            <div class="">
+                {% if verticalAds %}
+                    {% for ads in verticalAds|slice:"9:10" %}
+                    <a href="{{ads.url}}" target="_blank">
+                        <img src="{{ads.image.url}}"
+                            alt="" style="width:370px;height:150px;">
+                    </a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- after show-->
+    <div class="flex flex-wrap justify-center mx-10"  id="morenewslist" name="morenewslist">
+    
+    
+    </div> 
+
+    <center> 
+    <div id="loader" data-courses-url="{% url 'ajax_more_news' %}">
+        <input type="hidden" id="clickId" {% if click %} value="{{click}}" {% else %} value="1" {% endif %}  >
+        <button id="loadmore" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" >See more</button>
+    </div>
+    </center>
+    
+
+
+    <!--testing -->
+    <div id="news-box ">
+       
+    </div>
+    <div id ="spinner-box " class="not-visible">
+        
+        <div role="status">
+            <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+            </svg>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <center class="mt-5">
+    <div id ="loading-box ">
+        <button id="load-btn" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" >Load more</button>
+    </div>
+    </center>
+
+    <!-- Banner -->
+    {% if horizontalSixthAds.image%}
+    <a href="{{horizontalSixthAds.url}}" target="_blank">
+        <div class="addbanner ">
+            <img src="{{horizontalSixthAds.image.url}}"
+                alt="" class="w-11/12 m-auto ">
+        </div>
+    </a>
+    {% endif %}
+    <!-- Features  -->
+    <div class="bg-black mt-10">
+        <h1 class="text-white font-bold text-3xl px-10 pt-5">फिचर</h1>
+        <div data-slick='{"slidesToShow":4, "slidesToScroll":4, "arrows": true,}'
+            class="slide flex  flex-wrap m-5 p-5 relative z-100   text-white m-auto">
+            {% for news in featuresNews%}
+            <div class="card w-60 h-auto slider  " style="padding-left:10px;">
+                <a href="{% url  'newsDetails' news.news_slug  %}">
+                    <img src="{{news.image.url}}"
+                        alt="" class="w-11/12 h-40 rounded cursor-pointer">
+                    <p class="py-5 px-2 w-60">{{news.title}}</p>
+                </a>
+            </div>
+            {% endfor %}
+
+            <button class="prev-slide"></button>
+            <button class="next-slide"></button>
+        </div>
+
+    </div>
+
+
+
+
+    <!--testing-->
+    {% comment %} <div class="infinite-container">
+        {% for article in allnews %}
+          <div class="infinite-item">
+            <h3>{{ article.title }}</h3>
+            <p>
+              <small>{{ article.author }} / {{ article.date }}</small>
+            </p>
+            <p>{{ article.body|truncatechars:100 }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    
+      <div class="loading" style="display: none;">
+        Loading...
+      </div>
+    
+      {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ allnews.next_page_number }}">More</a>
+      {% endif %}
+    
+      <script>
+        var infinite = new Waypoint.Infinite({
+          element: $('.infinite-container')[0],
+          onBeforePageLoad: function () {
+            $('.loading').show();
+          },
+          onAfterPageLoad: function ($items) {
+            $('.loading').hide();
+          }
+        });
+      </script> {% endcomment %}
+
+
+    
+    
+      <!-- ajax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+        <script>
+            let visble =6
+            $(document).ready(function() {
+                $("#loadmore").click(function() {
+                    var url = $("#loader").attr("data-courses-url");
+                    var data = document.getElementById("clickId").value;
+                    console.log(data);
+                    $.ajax({
+                        url: url,
+                        data: {
+                            'data': visble
+                        },
+                        success: function(data) {
+                            $("#morenewslist").html(data);
+                            //console.log(data);
+                        },
+                        error:function(data){
+                            console.log(data);
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <!-- test loader-->
+        <script>
+            const newsBox = document.getElementById('news-box')
+            const spinnerbox = document.getElementById('spinner-box')
+            const loadBox = document.getElementById('loading-box')
+            const loadbtn = document.getElementById('load-btn')
+
+            let visble =6
+
+            const hadnleGetData = () => {
+                $.ajax({
+                    type:"GET",
+                    url:`/post-json/${visble}/`,
+                    success:function(response){
+                        console.log(response)
+                        console.log(response.max)
+                        const max_size =response.max
+                        const data = response.data
+                        
+                        data.map(news=>{
+                            console.log(news.id)
+                            newsBox.innerHTML += `
+                            
+                            <div class="w-full mx-10 flex flex-wrap  ">
+                                <div class="samacharcontent sm:w-full ">
+                                    <div class="flex items-center flex-wrap">
+                                        <h1 class=" text-3xl font-bold px-10 pt-3" style="color:#03406f;"> {{newsctg.categorie_name}}</h1>
+                                        
+                                            <span class="pl-5 mt-3 text-sm text-gray-500 border-r-2 pr-2 cursor-pointer ml-2 border-gray-300 font-bold">
+                                                <a href=""> </a>
+                                            </span>
+                                    </div>
+                                    <hr class="mt-3">
+                                    <div class="flex flex-wrap bg-gray-100 mt-5 cont items-center  ">
+                                        <img src="http://127.0.0.1:8000/media/${news.image}" class="object-fit" alt=""
+                                            style="width:700px;height:350px;">
+                                        <div class="desc m-auto">
+                                            <h1 class="text-center  text-3xl px-5 pt-3 font-bold leading-tight w-96 ">
+                                                <a href="">
+                                                    ${news.title}
+                                                </a>
+                                            </h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+ 
+
+                             `;
+
+                        });
+
+                        
+                        if (max_size){
+                           
+                            newsBox.innerHTML += "<h2>No data available.</h2>";
+                           
+                            
+                        }
+                    },
+                    error: function(error){
+                        console.log(error)
+                    }
+                })
+            }
+
+            hadnleGetData()
+           
+            loadbtn.addEventListener('click',()=>{
+                visble += 3  
+                hadnleGetData()
+            })
+        </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,221 @@
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+{% if instance %}Edit News{% else %}Add News{% endif %}
+{% endblock %}
+
+{% block body %}
+<title>{% if instance %}Edit News{% else %}Add News{% endif %}
+</title>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">{% if instance %}Edit News{% else %}Add News{% endif %}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                      
+                        <form method="post" action="{% url 'dashboard:edite_news' news.news_slug %}" enctype="multipart/form-data" id="form"  data-courses-url="{% url 'dashboard:ajax_load_courses' %}">
+                            {% csrf_token %}
+                                {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert alert-{{ msg.tags }} alert-dismissible text-bg-{{ msg.tags }} border-0 fade show" role="alert">
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <strong>{% if msg.tags == 'success' %}Success{% elif msg.tags == 'warning' %}Warning{% endif %} - </strong>{{ msg.message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                            
+
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Title </label>
+                                                    <input type="text" name="title" id="" class="form-control" required
+                                                           value="{{news.title}}" placeholder="Enter Title">
+                                                </div>
+                                                
+                                               
+                                                
+                                                <div class="mb-3" style="width:auto;">
+                                                    <label  for="" class="form-label" > Main Category </label><br>
+                                                    <select class="form-control"  id="category" name="categoryselect">
+                                                        
+                                                        {% for item in allcategorie %}
+                                                            {% if item.id == news.categorie.id %}
+                                                                <option value="{{news.categorie.id}}" selected>{{item.categorie_name}}</option>
+                                                            {% else %}
+                                                                <option value="{{item.id}}">{{item.categorie_name}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        
+                                                    </select>                                                       
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label  for="" class="form-label" required>Sub Category </label><br>
+                                                    <select class="form-control"  id="courses" name="subcategory">
+                                                        <option value="{{news.subCategorie.id}}" >{{news.subCategorie}}</option>
+                                                        <option value=""> </option>
+                                                        
+                                                    </select>                                                       
+                                                </div>
+                                                
+                                                
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Repoter </label>
+                                                    <select name="reporter" id="" class="form-control" required>
+                                                        <option value="{{news.repoter.id}}">{{news.repoter}}</option>
+                                          
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Trending </label>
+                                                    <select name="trending" id="" class="form-control" >
+                                                        {% if news.trending%}
+                                                            <option value="True" selected>Yes</option>
+                                                            <option value="False">No</option>
+                                                        {% else %}
+                                                            <option value="True">Yes</option>
+                                                            <option value="False" selected>No</option>
+                                                        {% endif %}
+                                                        
+
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Feature </label>
+                                                    <select name="feature" id="" class="form-control" >
+                                                        {% if news.feature%}
+                                                            <option value="True" selected>Yes</option>
+                                                            <option value="False">No</option>
+                                                        {% else %}
+                                                            <option value="True">Yes</option>
+                                                            <option value="False" selected>No</option>
+                                                        {% endif %}
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Highlight </label>
+                                                    <select name="highlight" id="" class="form-control" >
+                                                        {% if news.highlight %}
+                                                            <option value="True" selected >Yes</option>
+                                                            <option value="False">No</option>
+                                                        {% else %}
+                                                            <option value="True">Yes</option>
+                                                            <option value="False" selected>No</option>
+                                                        {% endif %}
+
+                                                    </select>
+                                                </div>
+
+                                                
+                                                
+                                            </div> <!-- end col-->
+
+                                            <div class="col-xl-6">
+
+                                                
+
+                                                     <!-- Date View -->
+                              
+                                                     <div class="mb-3">
+                                                        <label for="" class="form-label"> Description </label>
+                                                        <textarea class="form-control custom-class" name="description"  id="editor" rows="10" required placeholder="Enter Discriptions" style="height:40%;">
+                                                            {{ news.discriptions }}
+                                                        </textarea>
+                                                        
+                                                    </div>
+                                                  
+                                                
+                                                        <div class="mb-3 mt-3 mt-xl-0">
+                                                            <label for="" class="form-label">Image:</label>
+                                                            <input type="file" name="newsimage" id="" value="" class="form-control custom-class" onchange="showPreview(this);" >
+                                                            <div id="imageContainer" style="width:auto;">
+                                                                <img id="imagePreview" src="{% if news.image %}{{news.image.url}}{% endif %}" alt="">
+                                                            </div>
+                                                        </div><br><br>                                               
+                                           
+                                           
+                                            </div> <!-- end col-->
+                                            
+                                            <div class="col-auto">
+                                                <a href="{% url 'dashboard:allnews' %}" class="btn btn-danger"><i class=""></i>Back to Table</a>
+                                                <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Update News</button>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- end row -->
+
+                                </div> <!-- end card-->
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row-->
+                    </form>
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+        <!-- END wrapper -->
+
+        <script>
+            ClassicEditor
+                .create(document.querySelector('#editor'))
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $("#category").change(function() {
+                    var url = $("#form").attr("data-courses-url");
+                    var programmingId = $(this).val();
+                    console.log(programmingId);
+                    $.ajax({
+                        url: url,
+                        data: {
+                            'programming': programmingId
+                        },
+                        success: function(data) {
+                            $("#courses").html(data);
+                            //console.log(data);
+                        },
+                        error:function(data){
+                            console.log(data);
+                        }
+                    });
+                });
+            });
+        </script>
+
+       {%endblock%}

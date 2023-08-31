@@ -1,0 +1,90 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+{{categorie.categorie_name}}
+{% endblock %}
+{% block content %}
+
+    <!-- Description Section -->
+    {% if firstSubNews %}
+    <div class="w-full flex flex-wrap  ">
+        <div class="samacharcontent sm:w-full ">
+            <div class="flex items-center flex-wrap">
+                <h1 class="text-blue-500 text-3xl font-bold px-10 pt-5"> {{categorie.categorie_name}}</h1>
+            </div>
+            <hr class="mt-3">
+            <div class="flex flex-wrap bg-gray-100 mt-5 cont items-center  ">
+                <img src="{{firstSubNews.image.url}}" alt=""
+                    style="width:700px;height:350px;">
+                <div class="desc m-auto">
+                    <h1 class="text-center  text-3xl px-5 pt-3 font-bold leading-tight w-96 ">
+                        <a href="{% if firstSubNews.news_slug %} {% url  'newsDetails' firstSubNews.news_slug  %} {% endif %}">
+                            {{firstSubNews.title}}
+                        </a>
+                    </h1>
+                        {% comment %} <p class="text-center px-5 w-96">
+                            {{firstNews.discriptions|safe|truncatechars:100}}
+                        </p> {% endcomment %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+    <!-- card -->
+    <div class="flex flex-wrap justify-center gap-2 mt-10 pt-5">
+        {% for news in allNews%}
+        <div class="w-96 mx-2 my-4 bg-white  rounded-lg overflow-hidden">
+            <img src="{{news.image.url}}"
+                alt="Image 1" class="w-full h-64">
+            <div class=" py-2">
+                <span class="text-base font-bold text-lg pt-2 text-gray-700 hover:text-blue-600">
+                    <a href="{% url  'newsDetails' news.news_slug  %}">{{news.title|truncatechars:100}}</a>
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+
+        
+    </div>
+    {% else %}
+    <h1 class="text-center pt-5 ">Sorry no date..</h1>
+
+    {% endif %}
+
+    {% if is_paginated %}
+    <nav class="d-flex justify-content-center wow fadeIn">
+      <ul class="pagination pg-blue">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+          <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+
+
+
+   {% endblock %}

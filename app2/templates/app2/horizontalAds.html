@@ -1,0 +1,181 @@
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+Horizontal Ads
+{% endblock %}
+{% block body %}
+<title>Horizontal Ads</title>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">Horizontal Ads</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                     
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                         <div class="col-sm-5">
+                                                <a href="{% url 'dashboard:add_HorizontalAds'%}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add HorizontalAds</a>
+                                            </div> 
+                                        </div>
+                                        <div class="table-responsive"style="overflow-x: auto; width: 100%;" >
+                                            <table class="table table-striped dt-responsive w-100 " id=""  >        
+                                                    <tr>
+                                                     
+                                                        <th >Id</th>
+                                                        <th >Name</th>
+                                                        <th>Redirect Url</th>
+                                                        <th>Position Number</th>
+                                                        <th>Page</th>
+                                                        <th>Show</th>
+                                                        <th>Image</th>
+
+                                                        <th style="width: 120px;">Action</th>
+                                                    </tr>
+                                                                                                
+                                        {%for item in details%}
+
+                                        <tr>
+                                   
+                                            <td>
+                                                {{forloop.counter}}
+                                            </td>
+                                            <td>
+                                                {{item.name}}
+                                            </td>
+                                            <td>
+                                                {{item.url}}
+                                            </td>
+                                            <td>
+                                                {{item.positionNumber}}
+                                            </td>
+                                            <td>
+                                                {{item.page}}
+                                            </td>
+                                            <td>
+                                                {{item.show}}
+                                            </td>
+                                            <td>
+                                                <div class="image-gallery">
+                                                    <img class="thumbnail" src="{{item.image.url}}" alt="Thumbnail Image">
+                                                    <!-- Add more thumbnail images here if you have multiple images in the gallery -->
+                                                </div>
+                                                <div class="modal" id="imageModal">
+                                                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                                                    <img class="modal-content" id="modalImage">
+                                                </div>
+                                            
+                                                <script src="script.js"></script>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'dashboard:edit_HorizontalAds' item.id %}" class="font-18 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="uil uil-pen"></i></a>
+
+                                                <a href="#HorizontalAdsDeleteModel{{item.id}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                            </td>
+                                        </tr>
+                                        {%endfor%}
+                                                                            
+                            </table>                                          
+                                        
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination pagination-rounded mb-0">
+                                            {% if details.has_previous %}
+                                                <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
+                                                <li class="page-item"><a href="?page={{ details.previous_page_number }}" class="page-link">Previous</a></li>
+                                            {% endif %}
+
+                                            {% for num in details.paginator.page_range %}
+                                                {% if details.number == num %}
+                                                    <li class="page-item active"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+                                                {% else %}
+                                                    <li class="page-item"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if details.has_next %}
+                                                <li class="page-item"><a href="?page={{ details.next_page_number }}" class="page-link">Next</a></li>
+                                                <li class="page-item"><a href="?page={{ details.paginator.num_pages }}" class="page-link">Last</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                    <div class="modal" id="imageModal">
+                                        <div class="modal-content">
+                                            <img src="" alt="Full Image" class="modal-image" id="modalImage">
+                                        </div>
+                                    </div>
+                                    </div> <!-- end card-body-->
+                                </div> <!-- end card-->
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        
+                    </div> <!-- container -->
+                
+
+                </div> <!-- content -->
+                	<!-- Delete Modal HTML -->
+
+
+                    {% block content %}
+                    {% for item in details %}
+                        <div class="modal fade"  id="HorizontalAdsDeleteModel{{ item.id }}"  tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content custom-modal">
+                                        <div class="modal-footer">
+                                            Are you sure you want to delete this HorizontalAds Id Number #{{ item.id }}
+                                          
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <form method="post" action="{% url 'dashboard:deletehorizontalAds' item.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                                </div>
+                                    {% endfor %}
+                                    <style>
+                                    /* static/css/custom.css */
+                
+                                    .custom-modal {
+                                        background-color: white; /* Set the background color to white */
+                                    }
+                                    </style>
+                                    <!-- Include your other CSS files -->
+                                    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+                
+                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#HorizontalAdsdeleteModal').modal('show');
+                                        });
+                                    </script>
+                                    {% endblock %}
+                                            
+                              
+                
+                {%endblock%}
+                  

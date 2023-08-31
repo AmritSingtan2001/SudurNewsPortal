@@ -1,0 +1,185 @@
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+SubCategories
+{% endblock %}
+{% block body %}
+<title>SubCategories</title>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">SubCategorie</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                     
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                         <div class="col-sm-5">
+                                                <a href="{% url 'dashboard:add_SubCategories'%}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add SubCategories</a>
+                                            </div> 
+                                        </div>
+                                        <div class="table-responsive"style="overflow-x: auto; width: 100%;" >
+                                            {% csrf_token %}
+                                                {% if messages %}
+                                                {% for msg in messages %}
+                                                    <div class="alert alert-{{ msg.tags }} alert-dismissible text-bg-{{ msg.tags }} border-0 fade show" role="alert">
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                        <strong>{% if msg.tags == 'success' %}Success{% elif msg.tags == 'warning' %}Warning{% endif %} - </strong> - {{ msg.message }}
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                            <table class="table table-striped dt-responsive w-100 " id=""  >        
+                                                    <tr>
+                                                     
+                                                        <th >Id</th>
+                                                        <th >order_number</th>
+                                                        <th>SubCategories</th>
+                                                        <th colspan="2" style="justify-content:between;">subcategorie_name</th>
+                                                    </tr>
+                                                    
+                                                                                                
+                                        {%for item in details%}
+
+                                        <tr>
+                                   
+                                            <td>
+                                                {{forloop.counter }}
+                                            </td>
+                                            <td>
+                                                {{item.ordering}}
+                                            </td>
+                                            <td>
+                                                {{item.categorie_name}}
+                                            </td>
+                                            <td>
+                                                <table style=" width:100%;">
+                                                    {% for subctg in item.categorie.all %}
+                                                    <tr class="flex">
+                                                        <td> {{subctg.subcategorie_name}}</td>
+                                                        <td class="float-end"> 
+                                                            <a href="{% url 'dashboard:edit_SubCategories' subctg.id %}" class="font-18 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="uil uil-pen"></i></a>
+                                                            <a href="#SubCategoriesDeleteModel{{subctg.id}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </table>
+
+                                               
+                                            </td>
+                                         
+                                            {% comment %} <td>
+                                                {% for subctg in item.categorie.all %}
+                                                <a href="{% url 'dashboard:edit_SubCategories' item.id %}" class="font-18 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="uil uil-pen"></i></a>
+
+                                                <a href="#SubCategoriesDeleteModel{{item.id}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                {% endfor %}
+                                            </td> {% endcomment %}
+                                        </tr>
+                                        {%endfor%}
+                                                                            
+                            </table>                                          
+                                        
+                                    </div>
+                                    <nav>
+                                        <ul class="pagination pagination-rounded mb-0">
+                                            {% if details.has_previous %}
+                                                <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
+                                                <li class="page-item"><a href="?page={{ details.previous_page_number }}" class="page-link">Previous</a></li>
+                                            {% endif %}
+
+                                            {% for num in details.paginator.page_range %}
+                                                {% if details.number == num %}
+                                                    <li class="page-item active"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+                                                {% else %}
+                                                    <li class="page-item"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if details.has_next %}
+                                                <li class="page-item"><a href="?page={{ details.next_page_number }}" class="page-link">Next</a></li>
+                                                <li class="page-item"><a href="?page={{ details.paginator.num_pages }}" class="page-link">Last</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                    <div class="modal" id="imageModal">
+                                        <div class="modal-content">
+                                            <img src="" alt="Full Image" class="modal-image" id="modalImage">
+                                        </div>
+                                    </div>
+                                    </div> <!-- end card-body-->
+                                </div> <!-- end card-->
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        
+                    </div> <!-- container -->
+                
+
+                </div> <!-- content -->
+                	<!-- Delete Modal HTML -->
+
+
+                    {% block content %}
+                    {% for item in details %}
+                    {% for subctg in item.categorie.all %}
+                        <div class="modal fade"  id="SubCategoriesDeleteModel{{ subctg.id }}"  tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content custom-modal">
+                                        <div class="modal-footer">
+                                            Are you sure you want to delete this SubCategories - {{ subctg.subcategorie_name }}
+                                          
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <form method="post" action="{% url 'dashboard:deleteSubCategories' subctg.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endfor %}
+
+                        <style>
+                        /* static/css/custom.css */
+    
+                        .custom-modal {
+                            background-color: white; /* Set the background color to white */
+                        }
+                        </style>
+                        <!-- Include your other CSS files -->
+                        <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+    
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+                        <script>
+                            $(document).ready(function () {
+                                $('#SubCategoriesdeleteModal').modal('show');
+                            });
+                        </script>
+                        {% endblock %}
+                                
+                        
+                
+                {%endblock%}
+                  

@@ -1,0 +1,163 @@
+
+
+
+{% extends 'app2/base.html' %}
+{% load static %}
+{% block title %} 
+{% if instance %}Edit News{% else %}Add News{% endif %}
+{% endblock %}
+
+{% block body %}
+<title>{% if instance %}Edit News{% else %}Add News{% endif %}
+</title>
+
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">{% if instance %}Edit News{% else %}Add News{% endif %}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                      
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                                {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert alert-{{ msg.tags }} alert-dismissible text-bg-{{ msg.tags }} border-0 fade show" role="alert">
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <strong>{% if msg.tags == 'success' %}Success{% elif msg.tags == 'warning' %}Warning{% endif %} - </strong>{{ msg.message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                            
+
+                                                <div class="mb-3">
+                                                    <label for="{{ form.Title.id_for_label }}" class="form-label">Title </label>
+                                                    <input type="text" name="{{ form.Title.name }}" id="{{ form.Title.id_for_label }}" class="form-control" required
+                                                           value="{% if instance %}{{ instance.Title }}{% endif %}" placeholder="Enter Title">
+                                                </div>
+                                                
+
+                                                <div class="mb-3" style="width:auto;">
+                                                    <label  for="{{ form.categorie.id_for_label }}" class="form-label" > Main Category </label><br>
+                                                       {{ form.categorie }}                                                        
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label  for="{{ form.categorie.id_for_label }}" class="form-label" required>Sub Category </label><br>
+                                                    <select class="form-control">
+                                                        <option value="" selected disabled>----Select main category----</option>
+                                                        {% for item in form.categorie %}
+                                                        <option>{{item.categorie_name}}</option>
+                                                        {% endfor %}
+                                                    </select>                                                       
+                                                </div>
+                                                
+                                                
+                                                <div class="mb-3">
+                                                    <label for="{{ form.Repoter.id_for_label }}" class="form-label">Repoter </label>
+                                                    <select name="{{ form.Repoter.name }}" id="{{ form.Repoter.id_for_label }}" class="form-control" required>
+                                                        {% comment %} <option value="">Select Repoter</option> {% endcomment %}
+                                                        <option value="admin" {% if instance and instance.Repoter == "admin" %}selected{% endif %}>admin</option>
+                                                        <option value="Sunita" {% if instance and instance.Repoter == "Sunita" %}selected{% endif %}>Sunita</option>
+                                                        
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="{{ form.Trending.id_for_label }}" class="form-label">Trending </label>
+                                                    <select name="{{ form.Trending.name }}" id="{{ form.Trending.id_for_label }}" class="form-control" required>
+                                                        {% comment %} <option value="">Select page</option> {% endcomment %}
+                        
+                                                        <option value="Yes" {% if instance and instance.page == "Yes" %}selected{% endif %}>Yes</option>
+                                                        <option value="No" {% if instance and instance.page == "No" %}selected{% endif %}>No</option>
+                                                        <option value="Unknown" {% if instance and instance.page == "Unknown" %}selected{% endif %}>Unknown</option>
+
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="{{ form.Feature.id_for_label }}" class="form-label">Feature </label>
+                                                    <select name="{{ form.Feature.name }}" id="{{ form.Feature.id_for_label }}" class="form-control" required>
+                                                        {% comment %} <option value="">Select page</option> {% endcomment %}
+                        
+                                                        <option value="Yes" {% if instance and instance.page == "Yes" %}selected{% endif %}>Yes</option>
+                                                        <option value="No" {% if instance and instance.page == "No" %}selected{% endif %}>No</option>
+                                                        <option value="Unknown" {% if instance and instance.page == "Unknown" %}selected{% endif %}>Unknown</option>
+
+                                                    </select>
+                                                </div>
+                                                
+                                            </div> <!-- end col-->
+
+                                            <div class="col-xl-6">
+
+                                                     <!-- Date View -->
+                              
+                                                     <div class="mb-3">
+                                                        <label for="{{ form.Discriptions.id_for_label }}" class="form-label"> Description </label>
+                                                        
+                                                        <textarea class="form-control custom-class" name="{{ form.Discriptions.name }}"  id="summernote" rows="4" required placeholder="Enter Discriptions">{% if instance %}{{ instance.Discriptions }}{% endif %} </textarea>
+                                                        
+                                                    </div>
+                                                  
+                                                
+                                                        <div class="mb-3 mt-3 mt-xl-0">
+                                                            <label for="{{ form.Image.id_for_label }}" class="form-label">Image:</label>
+                                                            <input type="file" name="{{ form.Image.name }}" id="{{ form.Image.id_for_label }}" class="form-control custom-class" {% if not instance %}required{% endif %} onchange="showPreview(this);">
+                                                            <div id="imageContainer" style="width:auto;">
+                                                                <img id="imagePreview" src="{% if instance %}{{ instance.Image.url }}{% endif %}" alt="">
+                                                            </div>
+                                                        </div><br><br>                                               
+                                           
+                                           
+                                            </div> <!-- end col-->
+                                            
+                                            <div class="col-auto">
+                                                <a href="#" class="btn btn-danger"><i class=""></i>Back to Table</a>
+                                                {% if instance %}
+                                                    <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Update News</button>
+                                                {% else %}
+                                                    <button type="submit" class="btn btn-danger chat-send waves-effect waves-light">Add News</button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <!-- end row -->
+
+                                </div> <!-- end card-->
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row-->
+                    </form>
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+        <!-- END wrapper -->
+
+        
+       {%endblock%}
